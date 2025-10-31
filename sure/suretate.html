@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>スレを立てる - 8ch</title>
+  <style>
+    body {
+      background-color: #FFFFEE;
+      font-family: "MS PGothic", sans-serif;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    form {
+      max-width: 600px;
+      margin: auto;
+      background-color: #fff;
+      padding: 20px;
+      border: 1px solid #999;
+    }
+    input, textarea {
+      width: 100%;
+      font-family: inherit;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #ccc;
+      border: 1px solid #999;
+      cursor: pointer;
+    }
+    #statusMessage {
+      text-align: center;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>スレッド作成</h1>
+  <form id="threadForm">
+    <label for="title">スレッド名：</label><br>
+    <input type="text" id="title" name="title" placeholder="例：好きなゲームについて語ろう"><br>
+
+    <label for="body">>>1の本文：</label><br>
+    <textarea id="body" name="body" rows="5" placeholder="スレ立て乙！"></textarea><br>
+
+    <button type="submit">スレを立てる！</button>
+  </form>
+
+  <div id="statusMessage"></div>
+
+  <script>
+    document.getElementById('threadForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const title = document.getElementById('title').value.trim();
+      const body = document.getElementById('body').value.trim();
+      const status = document.getElementById('statusMessage');
+
+      if (!title || !body) {
+        status.textContent = 'スレッド名と本文は必須です。';
+        return;
+      }
+
+      status.textContent = 'スレを立てています...';
+
+      // Supabase連携（仮）
+      // const { data, error } = await supabase.from('threads').insert([{ title, body }]);
+
+      // 仮の成功表示
+      setTimeout(() => {
+        status.textContent = `「${title}」スレを立てました！`;
+        // window.location.href = `/thread.html?id=仮ID`;
+      }, 1000);
+    });
+  </script>
+</body>
+</html>
