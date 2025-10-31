@@ -5,53 +5,103 @@
   <title>スレを立てる - 8ch</title>
   <style>
     body {
-      background-color: #FFFFEE;
-      font-family: "MS PGothic", sans-serif;
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #121212;
+      color: #fff;
+    }
+    header {
+      text-align: center;
       padding: 20px;
+      background-color: #1f1f1f;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     }
     h1 {
-      text-align: center;
+      font-size: 2rem;
+      margin: 0;
     }
-    form {
+    nav {
+      background-color: #282828;
+      text-align: center;
+      padding: 10px 0;
+    }
+    nav a {
+      color: #4caf50;
+      text-decoration: none;
+      margin: 0 15px;
+      font-size: 1.2rem;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    .container {
       max-width: 600px;
-      margin: auto;
-      background-color: #fff;
+      margin: 30px auto;
       padding: 20px;
-      border: 1px solid #999;
+      background-color: #1f1f1f;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-size: 1.1rem;
     }
     input, textarea {
       width: 100%;
-      font-family: inherit;
-      font-size: 16px;
-      margin-bottom: 10px;
+      padding: 10px;
+      margin-top: 5px;
+      background-color: #282828;
+      border: 1px solid #4caf50;
+      color: #fff;
+      font-size: 1rem;
+      border-radius: 5px;
     }
     button {
+      margin-top: 20px;
       padding: 10px 20px;
-      font-size: 16px;
-      background-color: #ccc;
-      border: 1px solid #999;
+      font-size: 1.2rem;
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
       cursor: pointer;
     }
+    button:hover {
+      background-color: #45a049;
+    }
     #statusMessage {
-      text-align: center;
       margin-top: 20px;
+      text-align: center;
       font-weight: bold;
+      color: #4caf50;
     }
   </style>
 </head>
 <body>
-  <h1>スレッド作成</h1>
-  <form id="threadForm">
-    <label for="title">スレッド名：</label><br>
-    <input type="text" id="title" name="title" placeholder="例：好きなゲームについて語ろう"><br>
+  <header>
+    <h1>スレッド作成 - 8ch</h1>
+  </header>
 
-    <label for="body">>>1の本文：</label><br>
-    <textarea id="body" name="body" rows="5" placeholder="スレ立て乙！"></textarea><br>
+  <nav>
+    <a href="/index">ホーム</a>
+    <a href="/Sure/index.html">スレを立てる</a>
+    <a href="/pastvideosmain">このサイトについて</a>
+  </nav>
 
-    <button type="submit">スレを立てる！</button>
-  </form>
+  <div class="container">
+    <form id="threadForm">
+      <label for="title">スレッド名：</label>
+      <input type="text" id="title" name="title" placeholder="例：好きなゲームについて語ろう">
 
-  <div id="statusMessage"></div>
+      <label for="body">>>1の本文：</label>
+      <textarea id="body" name="body" rows="5" placeholder="スレ立て乙！"></textarea>
+
+      <button type="submit">スレを立てる！</button>
+    </form>
+
+    <div id="statusMessage"></div>
+  </div>
 
   <script>
     document.getElementById('threadForm').addEventListener('submit', async (e) => {
