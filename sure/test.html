@@ -2,43 +2,64 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>レス投稿 - 8ch</title>
+  <title>スレッドページ - 8ch</title>
   <style>
     body {
       margin: 0;
       font-family: 'Arial', sans-serif;
       background-color: #121212;
       color: #fff;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
     }
     header {
       text-align: center;
-      padding: 15px;
-      background-color: #1f1f1f;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    }
-    .container {
-      max-width: 600px;
-      margin: 30px auto;
-      padding: 20px;
-      background-color: #1f1f1f;
-      border-radius: 10px;
-    }
-    label {
-      display: block;
-      margin-top: 10px;
-    }
-    input, textarea {
-      width: 100%;
       padding: 10px;
-      margin-top: 5px;
+      background-color: #1f1f1f;
+    }
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+    }
+    .message {
+      max-width: 70%;
+      margin: 10px;
+      padding: 10px;
+      border-radius: 10px;
+      position: relative;
+      word-wrap: break-word;
+    }
+    .message .name {
+      font-size: 0.8rem;
+      color: #aaa;
+      margin-bottom: 5px;
+    }
+    .left {
+      background-color: #282828;
+      align-self: flex-start;
+    }
+    .right {
+      background-color: #4caf50;
+      align-self: flex-end;
+      color: #fff;
+    }
+    .input-area {
+      display: flex;
+      padding: 10px;
+      background-color: #1f1f1f;
+    }
+    .input-area input, .input-area textarea {
+      flex: 1;
+      padding: 10px;
+      margin-right: 10px;
       background-color: #282828;
       border: 1px solid #4caf50;
       color: #fff;
       border-radius: 5px;
     }
-    button {
-      margin-top: 15px;
+    .input-area button {
       padding: 10px 20px;
       background-color: #4caf50;
       border: none;
@@ -46,54 +67,49 @@
       color: #fff;
       cursor: pointer;
     }
-    button:hover {
+    .input-area button:hover {
       background-color: #45a049;
-    }
-    #statusMessage {
-      margin-top: 15px;
-      text-align: center;
-      color: #4caf50;
-      font-weight: bold;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>レス投稿ページ</h1>
+    <h1>スレッドタイトル</h1>
   </header>
 
-  <div class="container">
-    <form id="replyForm">
-      <label for="name">名前：</label>
-      <input type="text" id="name" name="name" placeholder="名無しさん">
+  <div class="messages" id="messages">
+    <!-- サンプルメッセージ -->
+    <div class="message left">
+      <div class="name">名無しさん</div>
+      <div class="text">>>1 スレ立て乙！</div>
+    </div>
+    <div class="message right">
+      <div class="name">自分</div>
+      <div class="text">ありがとう！</div>
+    </div>
+  </div>
 
-      <label for="message">本文：</label>
-      <textarea id="message" name="message" rows="5" placeholder="書き込み内容を入力"></textarea>
-
-      <button type="submit">投稿</button>
-    </form>
-
-    <div id="statusMessage"></div>
+  <div class="input-area">
+    <input type="text" id="name" placeholder="名前 (空なら名無しさん)">
+    <textarea id="message" placeholder="メッセージを入力"></textarea>
+    <button onclick="sendMessage()">投稿</button>
   </div>
 
   <script>
-    document.getElementById('replyForm').addEventListener('submit', (e) => {
-      e.preventDefault();
+    function sendMessage() {
       const name = document.getElementById('name').value.trim() || "名無しさん";
-      const message = document.getElementById('message').value.trim();
-      const status = document.getElementById('statusMessage');
+      const text = document.getElementById('message').value.trim();
+      if (!text) return;
 
-      if (!message) {
-        status.textContent = "本文は必須です。";
-        return;
-      }
+      const messages = document.getElementById('messages');
+      const div = document.createElement('div');
+      div.className = "message right";
+      div.innerHTML = `<div class="name">${name}</div><div class="text">${text}</div>`;
+      messages.appendChild(div);
 
-      status.textContent = "投稿中...";
-
-      setTimeout(() => {
-        status.textContent = `${name} さんの投稿: 「${message}」 を受け付けました！`;
-      }, 1000);
-    });
+      document.getElementById('message').value = "";
+      messages.scrollTop = messages.scrollHeight;
+    }
   </script>
 </body>
 </html>
