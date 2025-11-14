@@ -2,6 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>スレを立てる - 8ch</title>
   <style>
     body {
@@ -16,9 +17,19 @@
       background-color: #1f1f1f;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     }
-    h1 {
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .header-content h1 {
       font-size: 2rem;
-      margin: 0;
+      margin: 0 15px 0 0;
+    }
+    .channel-logo {
+      height: 60px;
+      width: 60px;
+      border-radius: 50%;
     }
     nav {
       background-color: #282828;
@@ -80,8 +91,10 @@
 </head>
 <body>
   <header>
-    <h1>8ch</h1>
-    <img class="channel-logo" src="/image/8ch.jpg" alt="チャンネルロゴ">
+    <div class="header-content">
+      <h1>8ch</h1>
+      <img class="channel-logo" src="/image/8ch.jpg" alt="チャンネルロゴ">
+    </div>
   </header>
 
   <nav>
@@ -118,13 +131,8 @@
 
       status.textContent = 'スレを立てています...';
 
-      // Supabase連携（仮）
-      // const { data, error } = await supabase.from('threads').insert([{ title, body }]);
-
-      // 仮の成功表示
       setTimeout(() => {
         status.textContent = `「${title}」スレを立てました！`;
-        // window.location.href = `/thread.html?id=仮ID`;
       }, 1000);
     });
   </script>
