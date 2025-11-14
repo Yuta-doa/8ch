@@ -105,6 +105,9 @@
 
   <div class="container">
     <form id="threadForm">
+      <label for="name">名前：</label>
+      <input type="text" id="name" name="name" placeholder="名無しさん">
+
       <label for="title">スレッド名：</label>
       <input type="text" id="title" name="title" placeholder="例：好きなゲームについて語ろう">
 
@@ -120,6 +123,7 @@
   <script>
     document.getElementById('threadForm').addEventListener('submit', async (e) => {
       e.preventDefault();
+      const name = document.getElementById('name').value.trim() || "名無しさん";
       const title = document.getElementById('title').value.trim();
       const body = document.getElementById('body').value.trim();
       const status = document.getElementById('statusMessage');
@@ -132,7 +136,7 @@
       status.textContent = 'スレを立てています...';
 
       setTimeout(() => {
-        status.textContent = `「${title}」スレを立てました！`;
+        status.textContent = `「${title}」スレを立てました！ (投稿者: ${name})`;
       }, 1000);
     });
   </script>
