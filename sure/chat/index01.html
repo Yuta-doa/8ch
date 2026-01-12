@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>チャット</title>
+</head>
+<body>
+
+  <input id="name" placeholder="名前">
+  <input id="message" placeholder="メッセージ">
+  <button onclick="sendMessage()">送信</button>
+
+  <div id="messages" style="height:300px; overflow-y:auto;"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const supabase = supabase.createClient(
+      "https://xeenrscglulrnuyvpcvw.supabase.co",   // ← あなたのURL
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhlZW5yc2NnbHVscm51eXZwY3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgyMjA2MzksImV4cCI6MjA4Mzc5NjYzOX0.2GfLcBMbUFVWJ2Wt5Rc1-AQia2QoRBPdSK4esm4SBa0"             // ← あなたのanonキー
+    );
+
+    async function sendMessage() {
+      const username = document.getElementById("name").value || "名無しさん";
+      const content = document.getElementById("message").value;
+      if (!content) return;
+
+      await supabase.from("messages").insert({ username, content });
+      document.getElementById("message").value = "";
+    }
+
+    supabase
+      .channel("public:messages")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "messages" },
+        (payload) => {
+          addMessage(payload.new);
+        }
+      )
+      .subscribe();
+
+    function addMessage(msg) {
+      const container = document.getElementById("messages");
+      const div = document.createElement("div");
+      div.innerHTML = `<strong>${msg.username}</strong>: ${msg.content}`;
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+    }
+  </script>
+
+</body>
+</html>
