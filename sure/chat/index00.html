@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>チャット</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #121212;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    header {
+      text-align: center;
+      padding: 10px;
+      background-color: #1f1f1f;
+    }
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+    .message {
+      max-width: 70%;
+      margin: 10px;
+      padding: 10px;
+      border-radius: 10px;
+      position: relative;
+      word-wrap: break-word;
+    }
+    .message .name {
+      font-size: 0.6rem;
+      font-weight: 300;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+    .message .text {
+      color: #fff;
+      font-size: 1rem;
+      line-height: 1.4;
+    }
+    .left {
+      background-color: #282828;
+      align-self: flex-start;
+    }
+    .right {
+      background-color: #477049;
+      align-self: flex-end;
+      color: #000;
+    }
+
+    .input-area {
+      display: flex;
+      padding: 10px;
+      background-color: #1f1f1f;
+    }
+    .input-area input, .input-area textarea {
+      flex: 1;
+      padding: 10px;
+      margin-right: 10px;
+      background-color: #282828;
+      border: 1px solid #4caf50;
+      color: #fff;
+      border-radius: 5px;
+    }
+    .input-area button {
+      padding: 10px 20px;
+      background-color: #4caf50;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+      cursor: pointer;
+    }
+    .input-area button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>チャット</h1>
+  </header>
+
+  <div class="messages" id="messages"></div>
+
+  <div class="input-area">
+    <input id="name" placeholder="名前 (空なら名無しさん)">
+    <textarea id="message" placeholder="メッセージを入力"></textarea>
+    <button onclick="sendMessage()">投稿</button>
+  </div>
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    const supabase = supabase.createClient(
+      "https://xeenrscglulrnuyvpcvw.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhlZW5yc2NnbHVscm51eXZwY3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgyMjA2MzksImV4cCI6MjA4Mzc5NjYzOX0.2GfLcBMbUFVWJ2Wt5Rc1-AQia2QoRBPdSK4esm4SBa0"
+    );
+
+    // メッセージ送信
