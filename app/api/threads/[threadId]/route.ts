@@ -1,5 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
+import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
+
+type ThreadWithBoardAndPosts = Prisma.ThreadGetPayload<{
+  include: {
+    board: true;
+    posts: true;
+  };
+}>;
+
+type ThreadPost = ThreadWithBoardAndPosts["posts"][number];
 
 type RouteProps = {
   params: Promise<{
@@ -15,7 +25,7 @@ export async function GET(_: NextRequest, { params }: RouteProps) {
     return NextResponse.json({ error: "Invalid thread id" }, { status: 400 });
   }
 
-  const thread = await prisma.thread.findUnique({
+  const thread: ThreadWithBoardAndPosts | null = await prisma.thread.findUnique({
     where: {
       id,
     },
@@ -42,7 +52,7 @@ export async function GET(_: NextRequest, { params }: RouteProps) {
     },
     createdAt: thread.createdAt.toISOString(),
     updatedAt: thread.updatedAt.toISOString(),
-    posts: thread.posts.map((post) => ({
+    posts: thread.posts.map((post: ThreadPost) => ({
       id: post.id,
       postNumber: post.postNumber,
       name: post.name,

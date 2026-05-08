@@ -1,5 +1,16 @@
 import { NextResponse } from "next/server";
+import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
+
+type BoardWithThreadCount = Prisma.BoardGetPayload<{
+  include: {
+    _count: {
+      select: {
+        threads: true;
+      };
+    };
+  };
+}>;
 
 export async function GET() {
   const boards = await prisma.board.findMany({
@@ -16,7 +27,7 @@ export async function GET() {
   });
 
   return NextResponse.json(
-    boards.map((board) => ({
+    boards.map((board: BoardWithThreadCount) => ({
       id: board.id,
       slug: board.slug,
       name: board.name,
