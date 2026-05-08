@@ -1,0 +1,43 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Board {
+  id          Int      @id @default(autoincrement())
+  slug        String   @unique
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  threads     Thread[]
+}
+
+model Thread {
+  id        Int      @id @default(autoincrement())
+  boardId   Int
+  title     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  board     Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  posts     Post[]
+
+  @@index([boardId, updatedAt(sort: Desc)])
+}
+
+model Post {
+  id         Int      @id @default(autoincrement())
+  threadId   Int
+  postNumber Int
+  name       String
+  trip       String?
+  body       String
+  createdAt  DateTime @default(now())
+  thread     Thread   @relation(fields: [threadId], references: [id], onDelete: Cascade)
+
+  @@unique([threadId, postNumber])
+  @@index([threadId, createdAt(sort: Asc)])
+}
