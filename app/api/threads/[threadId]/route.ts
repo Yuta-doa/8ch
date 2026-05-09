@@ -1,15 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
-import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 
-type ThreadWithBoardAndPosts = Prisma.ThreadGetPayload<{
-  include: {
-    board: true;
-    posts: true;
-  };
-}>;
+type ThreadPost = {
+  id: number;
+  postNumber: number;
+  name: string;
+  trip: string | null;
+  body: string;
+  createdAt: Date;
+};
 
-type ThreadPost = ThreadWithBoardAndPosts["posts"][number];
+type ThreadWithBoardAndPosts = {
+  id: number;
+  title: string;
+  createdAt: Date;
+  updatedAt: Date;
+  board: {
+    slug: string;
+    name: string;
+  };
+  posts: ThreadPost[];
+};
 
 type RouteProps = {
   params: Promise<{

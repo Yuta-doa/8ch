@@ -1,24 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
-import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { parseName } from "@/lib/trip";
 import { requireString, validateLength } from "@/lib/validation";
 
-type BoardWithThreads = Prisma.BoardGetPayload<{
-  include: {
-    threads: {
-      include: {
-        _count: {
-          select: {
-            posts: true;
-          };
-        };
-      };
-    };
+type ThreadWithPostCount = {
+  id: number;
+  title: string;
+  createdAt: Date;
+  updatedAt: Date;
+  _count: {
+    posts: number;
   };
-}>;
+};
 
-type ThreadWithPostCount = BoardWithThreads["threads"][number];
+type BoardWithThreads = {
+  id: number;
+  slug: string;
+  name: string;
+  description: string | null;
+  threads: ThreadWithPostCount[];
+};
 
 type RouteProps = {
   params: Promise<{
@@ -29,7 +30,7 @@ type RouteProps = {
 export async function GET(_: NextRequest, { params }: RouteProps) {
   const { boardSlug } = await params;
 
-  const board: BoardWithThreads | null = await prisma.board.findUnique({
+    const board: BoardWithThreads | null = await prisma.board.findUnique({
     where: {
       slug: boardSlug,
     },
