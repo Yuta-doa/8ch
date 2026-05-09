@@ -39,13 +39,14 @@ export default async function BoardPage({ params }: BoardPageProps) {
   if (!board) {
     notFound();
   }
+  type ThreadItem = (typeof board.threads)[number];
 
   return (
     <main className="page">
       <PageHeader title={board.name} description={board.description ?? undefined} backHref={"/" as Route} backLabel="← 板一覧に戻る" />
       <ThreadForm boardSlug={board.slug} />
       <ThreadList
-        threads={board.threads.map((thread) => ({
+        threads={board.threads.map((thread: ThreadItem) => ({
           id: thread.id,
           title: thread.title,
           createdAt: thread.createdAt.toISOString(),

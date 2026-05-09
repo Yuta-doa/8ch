@@ -39,6 +39,8 @@ export default async function ThreadPage({ params }: ThreadPageProps) {
     notFound();
   }
 
+  type PostItem = (typeof thread.posts)[number];
+
   return (
     <main className="page">
       <PageHeader
@@ -60,7 +62,7 @@ export default async function ThreadPage({ params }: ThreadPageProps) {
           },
           createdAt: thread.createdAt.toISOString(),
           updatedAt: thread.updatedAt.toISOString(),
-          posts: thread.posts.map((post) => ({
+          posts: thread.posts.map((post: PostItem) => ({
             id: post.id,
             postNumber: post.postNumber,
             name: post.name,

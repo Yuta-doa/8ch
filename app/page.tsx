@@ -17,12 +17,13 @@ export default async function HomePage() {
       },
     },
   });
+  type BoardItem = (typeof boards)[number];
 
   return (
     <main className="page">
       <PageHeader title="8ch" description="2ch風匿名掲示板。板を選んでスレッドを閲覧・作成できます。" />
       <BoardList
-        boards={boards.map((board) => ({
+        boards={boards.map((board: BoardItem) => ({
           id: board.id,
           slug: board.slug,
           name: board.name,
